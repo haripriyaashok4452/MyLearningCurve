@@ -1,5 +1,18 @@
 ﻿using FirstConsoleApp.Models;
+using System.Text.Json;
+
+string filePath = "employees.json";
 List<Employee> employees = new List<Employee>();
+
+if (File.Exists(filePath))
+{
+    string jsonData = File.ReadAllText(filePath);
+
+    if (!string.IsNullOrWhiteSpace(jsonData))
+    {
+        employees = JsonSerializer.Deserialize<List<Employee>>(jsonData);
+    }
+}
 
 while (true)
 {
@@ -20,9 +33,11 @@ while (true)
         Employee emp = new Employee();
 
 
-        //Below code throws error when name is entered instead of id, need to add exception handling
+        //Below code throws error when value other than numerals is entered, need to add exception handling
         //Console.Write("Enter Id: ");  
         //emp.Id = Convert.ToInt32(Console.ReadLine());
+        //Console.Write("Enter Name: ");  
+        //emp.name = Convert.ToString(Console.ReadLine());
 
         int id;
         Console.Write("Enter the Id: ");
@@ -70,6 +85,10 @@ while (true)
         emp.Salary = Salary;
 
         employees.Add(emp);
+
+        string updatedJson = JsonSerializer.Serialize(employees);
+        File.WriteAllText(filePath,updatedJson);
+
 
         Console.WriteLine("Employee Added Successfully");
 
