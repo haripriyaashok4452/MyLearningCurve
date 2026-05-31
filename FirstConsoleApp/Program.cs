@@ -1,8 +1,115 @@
-﻿Console.WriteLine("=====Employee Details=====");
-string employee_name = "Hari";
-int employeeAge = 26;
-double salary = 45000;
+﻿using FirstConsoleApp.Models;
+List<Employee> employees = new List<Employee>();
 
-Console.WriteLine($"Employee Name :  {employee_name}" );
-Console.WriteLine($"Employee Age :  {employeeAge}" );
-Console.WriteLine($"Employee Salary :  {salary}" );
+while (true)
+{
+    
+    Console.WriteLine("\n=== Employee Management ===");
+    Console.WriteLine("1. Add Employee");
+    Console.WriteLine("2. View Employees");
+    Console.WriteLine("3. Exit");
+
+    Console.Write("Choose an option: ");
+
+    string choice = Console.ReadLine();
+
+    switch(choice)
+    {
+        case "1":
+        
+        Employee emp = new Employee();
+
+
+        //Below code throws error when name is entered instead of id, need to add exception handling
+        //Console.Write("Enter Id: ");  
+        //emp.Id = Convert.ToInt32(Console.ReadLine());
+
+        int id;
+        Console.Write("Enter the Id: ");
+
+            while(!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invaid input, enter a numeric value:");
+            }
+
+        emp.Id = id;
+
+
+        string Name;
+
+        Console.Write("Enter Name: ");
+        Name = Console.ReadLine();
+               while(string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))
+            {
+                Console.WriteLine("Invaid input, enter a name:");
+                      Name = Console.ReadLine();
+
+            }
+             emp.Name = Name;
+
+   
+
+       int Age;
+        Console.Write("Enter the Age: ");
+
+            while(!int.TryParse(Console.ReadLine(), out Age))
+            {
+                Console.WriteLine("Invaid input, enter Age:");
+            }
+
+        emp.Age = Age;
+
+       double Salary;
+        Console.Write("Enter the Salary: ");
+
+            while(!double.TryParse(Console.ReadLine(), out Salary))
+            {
+                Console.WriteLine("Invaid input, enter Salary:");
+            }
+
+        emp.Salary = Salary;
+
+        employees.Add(emp);
+
+        Console.WriteLine("Employee Added Successfully");
+
+        break;
+        
+
+        case "2":
+
+             Console.WriteLine("\nEmployee List");
+
+            if(employees.Count == 0)
+            {
+                Console.WriteLine("No Employees Found");
+            }
+
+            else{
+             foreach (var employee in employees)
+             {
+                Console.WriteLine($"Id: {employee.Id}");
+                Console.WriteLine($"Name: {employee.Name}");
+                Console.WriteLine($"Age: {employee.Age}");
+                Console.WriteLine($"Salary:{employee.Salary}");
+                Console.WriteLine("-------------------");
+             
+             }
+            }
+
+        break;
+
+
+            
+                
+        case "3":
+        {
+            return;
+        }
+
+        default:
+            Console.WriteLine("Invalid Option");
+        break;
+
+    }
+ }
