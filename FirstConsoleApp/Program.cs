@@ -23,7 +23,7 @@ while (true)
     Console.WriteLine("1. Add Employee");
     Console.WriteLine("2. View Employees");
     Console.WriteLine("3. Delete Employee");
-    Console.WriteLine("4. Exit");
+    Console.WriteLine("4. Exit the application");
 
     Console.Write("Choose an option: ");
 
@@ -57,16 +57,17 @@ while (true)
 
             Console.Write("Enter Name: ");
             Name = Console.ReadLine();
+
                 while(string.IsNullOrWhiteSpace(Name) || Name.Any(char.IsDigit))
                 {
                     Console.WriteLine("Invaid input, enter a name:");
                         Name = Console.ReadLine();
 
                 }
+
                 emp.Name = Name;
 
     
-
             int Age;
             Console.Write("Enter the Age: ");
 
@@ -75,15 +76,15 @@ while (true)
                     Console.WriteLine("Invaid input, enter Age:");
                 }
 
-            emp.Age = Age;
+                 emp.Age = Age;
 
             double Salary;
-                Console.Write("Enter the Salary: ");
+            Console.Write("Enter the Salary: ");
 
-                    while(!double.TryParse(Console.ReadLine(), out Salary))
-                    {
-                        Console.WriteLine("Invaid input, enter Salary:");
-                    }
+                while(!double.TryParse(Console.ReadLine(), out Salary))
+                {
+                    Console.WriteLine("Invaid input, enter Salary:");
+                }
 
                 emp.Salary = Salary;
 
@@ -101,7 +102,7 @@ while (true)
 
         case "2":
         {
-             Console.WriteLine("\nEmployee List");
+            Console.WriteLine("\nEmployee List");
 
             if(employees.Count == 0)
             {
@@ -109,8 +110,8 @@ while (true)
             }
 
             else{
-             foreach (var employee in employees)
-             {
+            foreach (var employee in employees)
+            {
                 Console.WriteLine($"Id: {employee.Id}");
                 Console.WriteLine($"Name: {employee.Name}");
                 Console.WriteLine($"Age: {employee.Age}");
@@ -126,42 +127,41 @@ while (true)
             
                 
         case "3":
-          {                 
-            int deleteId;
+        {                 
+        int deleteId;
 
-            Console.Write("Enter Employee Id to delete: ");
+        Console.Write("Enter Employee Id to delete: ");
+        while (!int.TryParse(Console.ReadLine(), out deleteId))
+        {
+            Console.Write("Invalid input. Enter numeric Id: ");
+        }
 
-            while (!int.TryParse(Console.ReadLine(), out deleteId))
-    {
-        Console.Write("Invalid input. Enter numeric Id: ");
-    }
 
+        Employee employeeToDelete = employees.FirstOrDefault( e => e.Id == deleteId);
+        if (employeeToDelete == null)
+        {
+            Console.WriteLine("Employee not found");
+        }
 
-            Employee employeeToDelete = employees.FirstOrDefault( e => e.Id == deleteId);
+        else
+        {
+            employees.Remove(employeeToDelete);
+            string updatedJson = JsonSerializer.Serialize(employees);
+            File.WriteAllText(filePath,updatedJson);
+            Console.WriteLine("Employee deleted succesfully");
+        }
 
-                if (employeeToDelete == null)
-                {
-                    Console.WriteLine("Employee not found");
-                }
-
-                else
-                {
-                    employees.Remove(employeeToDelete);
-                    string updatedJson = JsonSerializer.Serialize(employees);
-                    File.WriteAllText(filePath,updatedJson);
-                    Console.WriteLine("Employee deleted succesfully");
-                }
         break;
         }
 
-                case "4":
-                    {
-                        return;
-                    }
+        case "4":
+        {
+            return;
+        }
 
-                default:
-                Console.WriteLine("Invalid Option");
-                 break;
+        default:
+        Console.WriteLine("Invalid Option");
+        break;
 
     }
  }
